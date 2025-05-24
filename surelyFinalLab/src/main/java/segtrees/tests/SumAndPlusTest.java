@@ -112,4 +112,18 @@ public class SumAndPlusTest {
         long ms = (System.nanoTime()-t0)/1_000_000;
         assertTrue(ms < 2000, "slow:_" + ms + "_ms");
     }
+
+    @Test
+    void InitializationByLength() {
+        int n = 10; // Размер массива
+        SegmentTree<Long, Long> segmentTree = new SegmentTree<>(n, Combiner.sumLongs(), Updater.addLongs());
+
+        // Пример обновления диапазона
+        segmentTree.update(0, 4, 5L); // Добавляем 5 к элементам с 0 по 4
+        segmentTree.update(2, 6, 3L); // Добавляем 3 к элементам с 2 по 6
+
+        // Пример запроса суммы в диапазоне
+        long sum = segmentTree.query(1, 3); // Запрашиваем сумму элементов с 1 по 3
+        assertEquals(13, sum);
+    }
 }
