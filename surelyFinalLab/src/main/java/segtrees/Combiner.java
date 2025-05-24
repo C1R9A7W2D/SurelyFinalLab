@@ -1,17 +1,27 @@
 package segtrees;
 
-import java.util.function.BinaryOperator;
-
 public interface Combiner<T> {
     class SumCombiner implements Combiner<Long>{
         @Override
         public Long combine(Long a, Long b) {
             if (a == null)
-                a = 0L;
+                return b;
             if (b == null)
-                b = 0L;
+                return a;
 
             return a + b;
+        }
+    }
+
+    class MinCombiner implements Combiner<Long> {
+        @Override
+        public Long combine(Long a, Long b) {
+            if (a == null)
+                return b;
+            if (b == null)
+                return a;
+
+            return Math.min(a, b);
         }
     }
 
@@ -19,5 +29,9 @@ public interface Combiner<T> {
 
     static Combiner<Long> sumLongs() {
         return new SumCombiner();
+    }
+
+    static Combiner<Long> minLongs() {
+        return new MinCombiner();
     }
 }

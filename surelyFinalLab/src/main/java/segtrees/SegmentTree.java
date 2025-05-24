@@ -25,7 +25,7 @@ public class SegmentTree<T, U> {
             int mid = (segStart + segEnd) / 2;
             buildTree(a, segStart, mid, 2 * pos + 1); // Левое поддерево
             buildTree(a, mid + 1, segEnd, 2 * pos + 2); // Правое поддерево
-            tree[pos] = combiner.combine(tree[2 * pos + 1], tree[2 * pos + 2]); // Комбинируем значения
+            tree[pos] = combiner.combine(tree[2 * pos + 1], tree[2 * pos + 2]);
         }
     }
 
@@ -35,7 +35,6 @@ public class SegmentTree<T, U> {
     private Updater<T> updater;
     private int size;
 
-    // Метод для обновления диапазона
     public void update(int start, int end, T value) {
         updateRange(0, size - 1, start, end - 1, value, 0);
     }
@@ -47,18 +46,15 @@ public class SegmentTree<T, U> {
             lazy[pos] = null; // Сбрасываем отложенное значение
         }
 
-        // Если диапазон вне текущего сегмента
         if (segmentOutsideOfRange(segStart, segEnd, rangeStart, rangeEnd)) {
             return;
         }
 
-        // Если текущий сегмент полностью входит в диапазон
         if (segmentFullyInRange(segStart, segEnd, rangeStart, rangeEnd)) {
             updateWithChildren(segStart, segEnd, value, pos);
             return;
         }
 
-        // Если текущий сегмент частично перекрывает диапазон
         updateSegmentCrossesRange(segStart, segEnd, rangeStart, rangeEnd, value, pos);
     }
 
@@ -87,7 +83,6 @@ public class SegmentTree<T, U> {
         tree[pos] = combiner.combine(tree[2 * pos + 1], tree[2 * pos + 2]); // Обновляем текущий сегмент
     }
 
-    // Метод для запроса суммы в диапазоне
     public T query(int start, int end) {
         return queryRange(0, size - 1, start, end - 1, 0);
     }
@@ -99,17 +94,14 @@ public class SegmentTree<T, U> {
             lazy[pos] = null;
         }
 
-        // Если диапазон вне текущего сегмента
         if (segmentOutsideOfRange(segStart, segEnd, rangeStart, rangeEnd)) {
-            return null; // Возвращаем null для значений, если не найдено
+            return null;
         }
 
-        // Если текущий сегмент полностью входит в диапазон
         if (segmentFullyInRange(segStart, segEnd, rangeStart, rangeEnd)) {
             return tree[pos];
         }
 
-        // Если текущий сегмент частично перекрывает диапазон
         return querySegmentCrossesRange(segStart, segEnd, rangeStart, rangeEnd, pos);
     }
 
@@ -118,11 +110,11 @@ public class SegmentTree<T, U> {
         T leftResult = queryRange(segStart, mid, rangeStart, rangeEnd, 2 * pos + 1);
         T rightResult = queryRange(mid + 1, segEnd, rangeStart, rangeEnd, 2 * pos + 2);
 
-        // Объединяем результаты из левого и правого поддеревьев
         if (leftResult == null)
             return rightResult;
         if (rightResult == null)
             return leftResult;
+
         return combiner.combine(leftResult, rightResult);
     }
 }

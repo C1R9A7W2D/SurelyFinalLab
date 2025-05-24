@@ -1,14 +1,19 @@
 package segtrees;
 
-import java.util.function.BinaryOperator;
-
 public interface Updater<T> {
-    class AddUpdater implements Updater<Long>{
+    class AddUpdater implements Updater<Long> {
         @Override
         public Long update(Long current, Long value, int length) {
             if (current == null)
                 current = 0L;
-            return current + value * length; // Обновляем текущее значение, добавляя новое
+            return current + value * length;
+        }
+    }
+
+    class AssignUpdater implements Updater<Long> {
+        @Override
+        public Long update(Long current, Long value, int length) {
+            return value;
         }
     }
 
@@ -16,5 +21,9 @@ public interface Updater<T> {
 
     static Updater<Long> addLongs() {
         return new AddUpdater();
+    }
+
+    static Updater<Long> assignLongs() {
+        return new AssignUpdater();
     }
 }
