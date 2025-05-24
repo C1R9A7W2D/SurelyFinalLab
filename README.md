@@ -1,2 +1,2 @@
 # SurelyFinalLab
-./maven test
+./mvn test
